@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Project_Monolith_Marakov_G.pdf</title>
+    <style>
+        :root { --bg-color: #323639; --sidebar-color: #3c4043; --toolbar-color: #202124; --accent-color: #8ab4f8; }
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 0; background-color: var(--bg-color); font-family: Arial, sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        .toolbar { background-color: var(--toolbar-color); height: 48px; display: flex; align-items: center; padding: 0 20px; color: #e8eaed; z-index: 100; box-shadow: 0 1px 5px rgba(0,0,0,0.5); }
+        .main-layout { display: flex; flex: 1; overflow: hidden; }
+
+        /* Sidebar с полной копией страниц */
+        .sidebar { width: 260px; background-color: var(--sidebar-color); overflow-y: auto; padding: 20px 0; display: flex; flex-direction: column; gap: 30px; border-right: 1px solid #555; }
+        .thumb-link { text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .thumb-wrapper { width: 140px; height: 198px; background: white; overflow: hidden; border: 2px solid #555; position: relative; cursor: pointer; }
+        .thumb-content { width: 210mm; height: 297mm; transform: scale(0.17); transform-origin: top left; pointer-events: none; padding: 20mm; color: #000; }
+        .thumb-label { color: #ccc; font-size: 11px; text-align: center; padding: 0 5px; }
+
+        /* Viewer */
+        .content-viewer { flex: 1; overflow-y: auto; padding: 40px 0; scroll-behavior: smooth; display: flex; flex-direction: column; align-items: center; }
+        .page { background: white; width: 210mm; min-height: 297mm; margin-bottom: 50px; box-shadow: 0 0 20px rgba(0,0,0,0.6); padding: 25mm 20mm; position: relative; color: #1a1a1a; flex-shrink: 0; }
+        .page-num { position: absolute; bottom: 15mm; left: 20mm; font-size: 12px; color: #888; }
+
+        h1 { text-align: center; font-size: 24pt; margin-bottom: 40px; margin-top: 0; }
+        h2 { font-size: 18pt; margin-top: 20pt; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 15px; }
+        h3 { font-size: 14pt; margin-top: 15pt; margin-bottom: 10px; }
+        p { font-size: 13pt; text-align: justify; margin-bottom: 12px; line-height: 1.4; }
+        ul, ol { margin-bottom: 15px; padding-left: 25px; }
+        li { font-size: 13pt; margin-bottom: 8px; }
+        
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 11pt; }
+        th, td { border: 1px solid #000; padding: 8px; text-align: left; }
+        th { background: #f2f2f2; }
+
+        .img-wrap { width: 100%; margin: 15px 0; text-align: center; cursor: zoom-in; }
+        .img-wrap img { max-width: 100%; max-height: 380px; border: 1px solid #ddd; }
+        .disclaimer { font-size: 10px; color: #cc0000; margin-top: 5px; font-weight: bold; text-align: center; }
+        
+        #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; align-items: center; justify-content: center; }
+        #modal img { max-width: 95%; max-height: 95%; }
+
+        @media print { body { background: white; overflow: visible; } .toolbar, .sidebar, #modal { display: none; } .content-viewer { padding: 0; overflow: visible; display: block; } .page { margin: 0; box-shadow: none; page-break-after: always; border: none; } }
+    </style>
+</head>
+<body>
+
+    <div id="modal" onclick="this.style.display='none'"><img src="" id="modal-img"></div>
+    
+    <div class="toolbar">
+        <div style="flex: 1;">Project_Monolith_Marakov_G.pdf</div>
+        <div style="font-size: 14px;">Листов: 10</div>
+    </div>
+    
+    <div class="main-layout">
+        <div class="sidebar" id="sidebar"></div>
+
+        <div class="content-viewer" id="viewer">
+            
+            <!-- СТР 1: ТИТУЛЬНЫЙ -->
+            <div class="page" id="p1">
+                <div style="text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div><p>МБОУ СОШ №11</p><p>г. к. Анапа (с. Супсех)</p></div>
+                    <div>
+                        <h1>ТВОРЧЕСКИЙ ПРОЕКТ</h1>
+                        <p style="text-align: center;">по предмету «Технология»</p>
+                        <h2 style="border: none; margin-top: 0;">Тема: «Органайзер Монолит»</h2>
+                        <div class="img-wrap" onclick="zoom(this)"><img src="_/Scheme_View_Main.png"><p class="disclaimer">Фото не из реальности, было создано в программе Blender как план или чертёж.</p></div>
+                    </div>
+                    <div style="text-align: right;">
+                        <p>Выполнил: ученик 5 «Г» класса</p>
+                        <p><strong>Мараков Григорий Евгеньевич</strong></p>
+                        <p style="margin-top: 20px;">Дата: 12.05.2026</p>
+                    </div>
+                </div>
+                <div class="page-num">1</div>
+            </div>
+
+            <!-- СТР 2: СОДЕРЖАНИЕ -->
+            <div class="page" id="p2">
+                <h1>Содержание</h1>
+                <div style="line-height: 2.1; font-size: 14pt;">
+                    <p>Раздел 1. Обоснование выбора творческого проекта ....................... 3</p>
+                    <p>Раздел 2. Цель проекта (цель и задачи) ............................................... 3</p>
+                    <p>Раздел 3. Историческая справка ........................................................... 4</p>
+                    <p>Раздел 4. Разработка возможных вариантов и выбор одного ............. 4</p>
+                    <p>Раздел 5. Описание собственной работы над проектом ....................... 5</p>
+                    <p>Раздел 6. Достоинства и недостатки проекта ....................................... 9</p>
+                    <p>Раздел 7. Оценка себестоимости изделия ............................................. 9</p>
+                    <p>Раздел 8. Техника безопасности и организация рабочего места ........... 9</p>
+                    <p>Раздел 9. Моя реклама ........................................................................... 10</p>
+                    <p>Раздел 10. Использованная литература ................................................. 10</p>
+                </div>
+                <div class="page-num">2</div>
+            </div>
+
+            <!-- СТР 3: РАЗДЕЛ 1 И 2 -->
+            <div class="page" id="p3">
+                <h2>Раздел 1. Обоснование выбора творческого проекта (формирование проблемы)</h2>
+                <p>Основной проблемой, с которой я столкнулся, стал беспорядок на рабочем столе. Большое количество ручек и карандашей постоянно теряются, что мешает быстро приступить к выполнению заданий. Я решил разработать органайзер, который соберет всё в одном месте.</p>
+                <p>Выбор пал на бумажный инжиниринг, так как это доступный способ создать прочную вещь без использования дорогого картона. Проект называется "Монолит", что означает целостность конструкции.</p>
+
+                <h2>Раздел 2. Цель проекта (цель и задачи)</h2>
+                <p><strong>Цель проекта:</strong> самостоятельно изготовить изделие из имеющихся материалов с помощью инструментов за отведенное время.</p>
+                <p><strong>Задачи проекта:</strong></p>
+                <ul>
+                    <li>а) Разработать конструкцию изделия, изготовить чертежи и технологическую карту.</li>
+                    <li>б) Подобрать подходящий материал для изготовления.</li>
+                    <li>в) Изготовить изделие, пользуясь разработанной документацией.</li>
+                </ul>
+                <div class="page-num">3</div>
+            </div>
+
+            <!-- СТР 4: РАЗДЕЛ 3 И 4 -->
+            <div class="page" id="p4">
+                <h2>Раздел 3. Историческая справка</h2>
+                <p>Подставки для письма появились очень давно. С развитием бумажного дела в Европе возникли настольные приборы с чернильницами. Сегодня большинство таких вещей делают из пластика, но экологичный подход заставляет нас возвращаться к бумаге.</p>
+                <h2>Раздел 4. Разработка возможных вариантов и выбор одного варианта изделия</h2>
+                <p>Для поиска формы я использовал Blender. На схеме ниже представлен вид сверху моей финальной модели. Серый цвет выбран для того, чтобы сфокусироваться на геометрии внутренних перегородок.</p>
+                <div class="img-wrap" onclick="zoom(this)"><img src="_/Scheme_View_Top.png"><p class="disclaimer">Фото не из реальности, было создано в программе Blender как план или чертёж.</p></div>
+                <p>Я выбрал вариант модульной сборки, где секции настраиваются под нужды пользователя.</p>
+                <div class="page-num">4</div>
+            </div>
+
+            <!-- СТР 5: РАЗДЕЛ 5.1 И 5.2 (ЭТАП 1) -->
+            <div class="page" id="p5">
+                <h2>Раздел 5. Описание собственной работы над проектом</h2>
+                <h3>5.1 Подготовка материалов и инструментов</h3>
+                <p>Для изготовления мне понадобились: листы плотной бумаги (6 шт.), клей-карандаш, линейка, простой карандаш, ножницы.</p>
+                <h3>5.2 Создание технологической карты изготовления изделия</h3>
+                <p><strong>Этап 1: Создание основы.</strong> Я взял бумагу за правый верхний край и протянул его до образования идеального прямоугольника. Лишнюю часть отрезал, получив квадрат. Чтобы убрать шов сгиба, я сложил его повторно по другой стороне. Выровнял лист линейкой.</p>
+                <div class="img-wrap" onclick="zoom(this)"><img src="_/Craft_Step1.png"><p class="disclaimer">Фото не из реальности, было создано в программе Blender как план или чертёж.</p></div>
+                <div class="img-wrap" onclick="zoom(this)"><img src="_/Actual_Step1.jpg"></div>
+                <div class="page-num">5</div>
+            </div>
+
+            <!-- СТР 6: ЭТАП 2 -->
+            <div class="page" id="p6">
+                <h3>5.2 Продолжение технологической карты (Этап 2)</h3>
+                <p><strong>Этап 2: Создание корпуса.</strong> Разрезал два листа пополам. Одну из частей убрал. Оставшиеся два листа склеил между собой по краям. Когда клей высох, согнул заготовку в круг и склеил края, сформировав цилиндр.</p>
+                <div class="img-wrap" onclick="zoom(this)"><img src="_/Craft_Step2.png"><p class="disclaimer">Фото не из реальности, было создано в программе Blender как план или чертёж.</p></div>
+                <div class="img-wrap" onclick="zoom(this)"><img src="_/Actual_Step2.jpg"></div>
+                <div class="page-num">6</div>
+            </div>
+
+            <!-- СТР 7: ЭТАП 3 -->
+            <div class="page" id="p7">
+                <h3>5.2 Продолжение технологической карты (Этап 3)</h3>
+                <p><strong>Этап 3: Создание секций.</strong> Разрезал 2 листа пополам, получив 4 части. Обрезал их до 20 см в ширину. Прорезал пазы по принципу пирамиды:</p>
+                <ul>
+                    <li>1-я деталь: отступ 2 см снизу, рез сверху.</li>
+                    <li>2-я деталь: резы на уровнях 2 см и 4 см.</li>
+                    <li>3-я деталь: на 2 см выше предыдущих (4 см и 6 см).</li>
+                    <li>4-я деталь: рез снизу на 8 см.</li>
+                </ul>
+                <div class="img-wrap" onclick="zoom(this)"><img src="_/Step3_Plan.png"><p class="disclaimer">Фото не из реальности, было создано в программе Blender как план или чертёж.</p></div>
+                <div class="img-wrap" onclick="zoom(this)"><img src="_/Actual_Step3.jpg"></div>
+                <div class="page-num">7</div>
+            </div>
+
+            <!-- СТР 8: 5.3 ПРАКТИЧЕСКАЯ ЧАСТЬ -->
+            <div class="page" id="p8">
+                <h3>5.3 Выполнение практической части проекта</h3>
+                <p>Намазал квадратную основу клеем, установил на неё бумажный цилиндр и зафиксировал под прессом (учебником). Через 5 минут вставил внутрь готовую крестовину секций. Секции не приклеены к стенкам, что позволяет их настраивать.</p>
+                <div class="img-wrap" onclick="zoom(this)"><img src="_/Actual_Step4_Waiting.jpg"></div>
+                <div class="img-wrap" onclick="zoom(this)"><img src="_/Actual_Result.jpg"></div>
+                <div class="page-num">8</div>
+            </div>
+
+            <!-- СТР 9: РАЗДЕЛ 6, 7, 8 -->
+            <div class="page" id="p9">
+                <h2>Раздел 6. Достоинства и недостатки проекта</h2>
+                <p>Достоинства: органайзер легкий, дешевый и модульный. Недостатки: из-за гибкости бумаги круг получился не идеальным, но это стало фишкой дизайна.</p>
+                <h2>Раздел 7. Оценка себестоимости изделия</h2>
+                <p>Общие затраты: 22 рубля (клей и бумага). Экономия по сравнению с покупкой в магазине — более 90%.</p>
+                <h2>Раздел 8. Техника безопасности при работе, организация рабочего места</h2>
+                <p>Рабочее место было очищено от лишних предметов. Соблюдал правила ТБ: ножницы передавал кольцами вперед, клей использовал аккуратно.</p>
+                <div class="page-num">9</div>
+            </div>
+
+            <!-- СТРАНИЦА 10: РАЗДЕЛ 9 И 10 -->
+            <div class="page" id="p10">
+                <h2>Раздел 9. Моя реклама</h2>
+                <div style="border: 3px solid #000; padding: 20px; text-align: center;">
+                    <h3 style="font-size: 20pt; margin: 0;">ОРГАНАЙЗЕР МОНОЛИТ</h3>
+                    <p>Порядок на столе — порядок в мыслях! Спроектирован в цифре, создан своими руками.</p>
+                    <div class="img-wrap" onclick="zoom(this)" style="margin:0"><img src="_/Actual_Result.jpg" style="max-height: 200px;"></div>
+                </div>
+
+                <h2>Раздел 10. Использованная литература</h2>
+                <ol>
+                    <li>Google AI Studio — <a href="https://aistudio.google.com/">https://aistudio.google.com/</a>. Данная ИИ использовалась для упрощения поиска информации в интернете, исправления грамматических ошибок в моем тексте и автоматизации верстки HTML файла. Работа составлена и выполнена ТОЛЬКО мною.</li>
+                    <li>Программа Blender 3D — использовалась для проектирования цифровых схем и чертежей изделия.</li>
+                </ol>
+                <div class="page-num">10</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function zoom(el){
+            const m=document.getElementById('modal');
+            const mi=document.getElementById('modal-img');
+            m.style.display="flex"; mi.src=el.querySelector('img').src;
+        }
+
+        window.onload = function() {
+            const sidebar = document.getElementById('sidebar');
+            const pages = document.querySelectorAll('.page');
+            pages.forEach((page, index) => {
+                const link = document.createElement('a');
+                link.href = `#${page.id}`; link.className = 'thumb-link';
+                const wrapper = document.createElement('div');
+                wrapper.className = 'thumb-wrapper';
+                const clone = document.createElement('div');
+                clone.className = 'thumb-content';
+                clone.innerHTML = page.innerHTML;
+                wrapper.appendChild(clone); link.appendChild(wrapper);
+                const label = document.createElement('div');
+                label.className = 'thumb-label';
+                label.innerText = (index + 1) + '. ' + (page.querySelector('h1, h2, h3')?.innerText.split('.')[0] || '');
+                link.appendChild(label); sidebar.appendChild(link);
+            });
+        }
+    </script>
+</body>
+</html>
